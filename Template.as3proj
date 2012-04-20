@@ -17,7 +17,7 @@
   <classpaths>
     <class path="src" />
     <class path="lib" />
-    <class path="third_party" />
+    <class path="third_party\flixel" />
   </classpaths>
   <!-- Build options -->
   <build>
