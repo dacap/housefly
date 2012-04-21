@@ -8,10 +8,15 @@ package
 		[Embed(source = "../assets/lev_main_fg.png")] private var GfxFg:Class;
 		[Embed(source = "../assets/lev_main_sunlight.png")] private var GfxSunlight:Class;
 		[Embed(source = "../assets/lev_main_ventcover.png")] private var GfxVentCover:Class;
+		[Embed(source = "../assets/lev_main_cat.png")] private var GfxCat:Class;
+		[Embed(source = "../assets/lev_main_fan.png")] private var GfxFan:Class;
 
 		private var _fg:FlxSprite;
 		private var _sunlight:FlxSprite;
 		private var _ventcover:FlxSprite;
+		private var _cat:FlxSprite;
+		private var _fan:FlxSprite;
+		private var _fanIsOn:Boolean;
 		
 		private var _levGlassEntry:FlxRect;
 
@@ -30,7 +35,18 @@ package
 			_ventcover.addAnimation("movement", [0, 1, 2, 1], 4, true);
 			_ventcover.play("movement", true);
 			add(_ventcover);
-			
+
+			_cat = new FlxSprite(89, 216);
+			_cat.loadGraphic(GfxCat);
+			add(_cat);
+
+			_fan = new FlxSprite(117, 1);
+			_fan.loadGraphic(GfxFan, true, false, 86, 38);
+			_fan.addAnimation("movement", [0, 1, 2], 12, true);
+			_fan.play("movement");
+			_fanIsOn = true;
+			add(_fan);
+
 			_levGlassEntry = new FlxRect(_fg.width - 32, _fg.height / 2 - 64, 32, 128);
 
 			setFgSprite(_fg);
@@ -66,6 +82,22 @@ package
 		{
 			var playerPos:FlxPoint = new FlxPoint(player.getSprite().x, player.getSprite().y);
 			
+			// Fan turbulence
+			if (_fanIsOn)
+			{
+				if (playerPos.y < 60) {
+					player.getSprite().y = 60;
+					if (player.getSprite().velocity.y < 0)
+						player.getSprite().velocity.y = -player.getSprite().velocity.y;
+				}
+				else if (playerPos.y < 80) {
+					var f:Number = 1 - (playerPos.y / 80);
+					player.getSprite().velocity.x += 8 - 8 * ((1-f) + f*Math.random());
+					player.getSprite().velocity.y += 4 * ((1-f) + f*Math.random());
+				}
+			}
+			
+			// Enter to "glass" level
 			var dist:Number = FlxU.getDistance(playerPos,
 											   new FlxPoint(_levGlassEntry.x + _levGlassEntry.width,
 															_levGlassEntry.y + _levGlassEntry.height/2));

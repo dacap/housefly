@@ -23,9 +23,11 @@ package
 		    _flySprite.loadGraphic(GfxFly, true, true, 14, 14);
 			_flySprite.addAnimation("fly", [0, 1], 30, true);
 			_flySprite.play("fly", true);
+			_flySprite.maxVelocity.make(256, 256);
 
 			_flyPixel = new FlxSprite();
 			_flyPixel.makeGraphic(1, 1, 0xff000000);
+			_flyPixel.maxVelocity.make(256, 256);
 
 			_rect = new FlxRect();
 

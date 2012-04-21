@@ -83,7 +83,7 @@ package
 				switchLevel(Levels.MAIN);
 			}
 			else if (playerSprite.x < 128) {
-				FlxG.camera.zoom = 1.8 + (0.2 * (playerSprite.x / 128));
+				FlxG.camera.zoom = 1.7 + (0.3 * (playerSprite.x / 128));
 			}
 			else {
 				FlxG.camera.zoom = 2.0;
