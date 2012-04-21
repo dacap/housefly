@@ -9,7 +9,7 @@ package
 	{
 		public function Game()
 		{
-			super(320, 240, MenuState, 2);
+			super(320, 240, PlayState, 2);
 		}
 	}
 }
