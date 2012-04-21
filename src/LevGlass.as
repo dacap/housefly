@@ -43,23 +43,29 @@ package
 			if (_bg2.x + _bg2.width < 0) { _bg2.x = _bg1.x + _bg1.width; }
 		}
 
-		override public function initPlayerPosition(player:Player, fromLevel:int):void
+		override public function initPlayerPosition(player:Player, fromLevel:Level):void
 		{
+			var oldRect:FlxRect;
+			var oldX:Number = player.getSprite().x;
+			var oldY:Number = player.getSprite().y;
+
 			super.initPlayerPosition(player, fromLevel);
 
 			player.setLook(Player.CLOSE_LOOK);
 			var playerSprite:FlxSprite = player.getSprite();
-
-			switch (fromLevel) {
+			
+			switch (fromLevel ? fromLevel.num: Levels.NONE) {
 				case Levels.NONE:
 					playerSprite.x = _fg.width - playerSprite.width - 100;
 					playerSprite.y = FlxG.height/2;
 					playerSprite.velocity.x = 128;
 					playerSprite.velocity.y = -16;
 					break;
+
 				case Levels.MAIN:
-					playerSprite.x = 32;
-					playerSprite.y = FlxG.height/2;
+					oldRect = (fromLevel as LevMain).levGlassEntry;
+					playerSprite.x = _fg.width * (oldX - oldRect.x) / oldRect.width;
+					playerSprite.y = _fg.height * (oldY - oldRect.y) / oldRect.height;
 					break;
 			}
 		}
@@ -79,17 +85,11 @@ package
 			}
 
 			// The fly is going to MAIN level.
-			if (playerSprite.x < 16) {
+			if (playerSprite.x < 0 || playerSprite.y < 0 || playerSprite.y + playerSprite.height >= _fg.height) {
 				switchLevel(Levels.MAIN);
 			}
-			else if (playerSprite.x < 128) {
-				FlxG.camera.zoom = 1.7 + (0.3 * (playerSprite.x / 128));
-			}
-			else {
-				FlxG.camera.zoom = 2.0;
-			}
-
-			super.controlInteractionsWithPlayer(player);
+			else
+				super.controlInteractionsWithPlayer(player);
 		}
 
 	}

@@ -6,13 +6,15 @@ package
 	{
 		private var _num:int;
 		private var _fg:FlxSprite;
+		/*private var _lockReentry:Boolean = false;
+		private var _switched:Boolean = false;*/
 
 		public function Level(num:int):void
 		{
 			super();
 			_num = num;
 		}
-		
+
 		public function get num():int
 		{
 			return _num;
@@ -21,6 +23,11 @@ package
 		protected function setFgSprite(fg:FlxSprite):void
 		{
 			_fg = fg;
+		}
+
+		public function get fgSprite():FlxSprite
+		{
+			return _fg;
 		}
 
 		public function setupCameraForPlayer(player:Player):void
@@ -35,9 +42,9 @@ package
 								Math.max(0, Math.min(rc.y, _fg.height - rc.height)));
 		}
 
-		public function initPlayerPosition(player:Player, fromLevel:int):void
+		public function initPlayerPosition(player:Player, fromLevel:Level):void
 		{
-			// Do nothing
+			//_lockReentry = true;
 		}
 
 		public function controlInteractionsWithPlayer(player:Player):void
@@ -72,12 +79,21 @@ package
 //			var pt:FlxPoint = limitRect(new FlxRect(spr.x, spr.y, spr.width, spr.height));
 //			spr.x = pt.x;
 //			spr.y = pt.y;
+/*
+			if (!_switched) {
+				_lockReentry = false;
+			}
+			_switched = false;*/
 		}
-		
+
 		protected function switchLevel(levelNum:int):void
 		{
-			(FlxG.state as PlayState).switchLevel(levelNum);
+			/*if (!_lockReentry) {
+				_lockReentry = false;*/
+				(FlxG.state as PlayState).switchLevel(levelNum);
+			/*}
+			_switched = true;*/
 		}
-		
+
 	}
 }

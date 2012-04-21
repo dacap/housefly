@@ -26,7 +26,7 @@ package
 			_flySprite.maxVelocity.make(256, 256);
 
 			_flyPixel = new FlxSprite();
-			_flyPixel.makeGraphic(1, 1, 0xff000000);
+			_flyPixel.makeGraphic(2, 2, 0xff000000);
 			_flyPixel.maxVelocity.make(256, 256);
 
 			_rect = new FlxRect();
@@ -78,7 +78,7 @@ package
 
 		public function setCurrentLevel(level:Level):void
 		{
-			var fromLevel:int = (_curLevel != null ? _curLevel.num: Levels.NONE);
+			var fromLevel:Level = _curLevel;
 
 			_curLevel = level;
 			_curLevel.initPlayerPosition(this, fromLevel);

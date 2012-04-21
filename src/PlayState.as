@@ -7,6 +7,7 @@ package
 		private var _level:Level;
 		private var _levGlass:LevGlass;
 		private var _levMain:LevMain;
+		private var _levCat:LevCat;
 		private var _player:Player;
 		private var _title:FlxText;
 		private var _author:FlxText;
@@ -79,6 +80,11 @@ package
 			super.update();
 		}
 		
+		public function getLevel():Level
+		{
+			return _level;
+		}
+		
 		public function switchLevel(levelNum:int):void
 		{
 			remove(_level);
@@ -93,6 +99,11 @@ package
 				case Levels.MAIN:
 					if (_levMain == null) _levMain = new LevMain();
 					_level = _levMain;
+					break;
+					
+				case Levels.CAT:
+					if (_levCat == null) _levCat = new LevCat();
+					_level = _levCat;
 					break;
 			}
 
