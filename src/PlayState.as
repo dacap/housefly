@@ -5,6 +5,8 @@ package
 	public class PlayState extends FlxState
 	{
 		private var _level:Level;
+		private var _levGlass:LevGlass;
+		private var _levMain:LevMain;
 		private var _player:Player;
 		private var _title:FlxText;
 		private var _time:Number;
@@ -15,14 +17,17 @@ package
 			
 			_time = 0.0;
 
-			_level = new LevGlass();
+			_levGlass = new LevGlass();
+			_level = _levGlass;
+
 			_player = new Player();
-			_player.curLevel = _level;
+			_player.setCurrentLevel(_level);
 			
 			add(_level);
 			add(_player);
 
-			_title = new FlxText(FlxG.width/2 - 100, FlxG.height - 32, 200, "housefly");
+			_title = new FlxText(FlxG.width / 2 - 100, FlxG.height - 32, 200, "housefly");
+			_title.color = 0xff000000
 			_title.alignment = "center";
 			_title.scrollFactor.x = _title.scrollFactor.y = 0.0;
 			_title.alpha = 0;
@@ -49,5 +54,28 @@ package
 
 			super.update();
 		}
+		
+		public function switchLevel(levelNum:int):void
+		{
+			remove(_level);
+
+			switch (levelNum) {
+
+				case Levels.GLASS:
+					_level = _levGlass;
+					break;
+
+				case Levels.MAIN:
+					if (_levMain == null) {
+						_levMain = new LevMain();
+					}
+					_level = _levMain;
+					break;
+			}
+
+			add(_level);
+			_player.setCurrentLevel(_level);
+		}
+
 	}
 }
