@@ -55,25 +55,25 @@ package
 			if (spr.x < 0) {
 				spr.x = 1;
 				if (spr.velocity.x < 0) {
-					spr.velocity.x = -spr.velocity.x;
+					spr.velocity.x = -spr.velocity.x/2;
 				}
 			}
 			if (spr.y < 0) {
 				spr.y = 1;
 				if (spr.velocity.y < 0) {
-					spr.velocity.y = -spr.velocity.y;
+					spr.velocity.y = -spr.velocity.y/2;
 				}
 			}
 			if (spr.x + spr.width > _fg.width) {
 				spr.x = _fg.width - spr.width - 1;
 				if (spr.velocity.x > 0) {
-					spr.velocity.x = -spr.velocity.x;
+					spr.velocity.x = -spr.velocity.x/2;
 				}
 			}
 			if (spr.y + spr.height > _fg.height) {
 				spr.y = _fg.height - spr.height - 1;
 				if (spr.velocity.y > 0) {
-					spr.velocity.y = -spr.velocity.y;
+					spr.velocity.y = -spr.velocity.y/2;
 				}
 			}
 //			var pt:FlxPoint = limitRect(new FlxRect(spr.x, spr.y, spr.width, spr.height));
