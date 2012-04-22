@@ -6,8 +6,10 @@ package
 	public class LevLitterbox extends LevelCloseLook
 	{
 		[Embed(source = "../assets/lev_litterbox_fg.png")] private var GfxFg:Class;
+		[Embed(source = "../assets/lev_litterbox_gift.png")] private var GfxGift:Class;
 
 		private var _fg:FlxSprite;
+		private var _gift:FlxSprite;
 
 		public function LevLitterbox():void
 		{
@@ -15,6 +17,8 @@ package
 
 			_fg = new FlxSprite(0, 0, GfxFg);
 			add(_fg);
+
+			_gift = new FlxSprite(245, 196, GfxGift);
 
 			setFgSprite(_fg);
 		}
@@ -29,7 +33,17 @@ package
 				return;
 			}
 
+			// Touch the "gift"
+			if (_gift.visible && _gift.overlaps(playerSprite)) {
+				player.standOnGift();
+			}
+
 			super.controlInteractionsWithPlayer(player);
+		}
+
+		public function addTheGift():void
+		{
+			add(_gift);
 		}
 
 	}

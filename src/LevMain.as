@@ -138,7 +138,18 @@ package
 		public function startCatAni():void
 		{
 			_catAwakened = true;
+			_cat.addAnimationCallback(catAnimationControl);
 			_cat.play("gotolitterbox");
+		}
+
+		private function catAnimationControl(ani:String, frame:int, index:int):void
+		{
+			// Add cat's crap to the litter box.
+			(FlxG.state as PlayState).getLitterboxLevel().addTheGift();
+			_litter.play("dirty");
+
+			// Remove the cat from the scene.
+			remove(_cat);
 		}
 
 	}

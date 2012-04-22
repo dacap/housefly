@@ -92,7 +92,14 @@ package
 
 		public function getMainLevel():LevMain
 		{
+			if (!_levMain) _levMain = new LevMain();
 			return _levMain;
+		}
+
+		public function getLitterboxLevel():LevLitterbox
+		{
+			if (!_levLitterbox) _levLitterbox = new LevLitterbox();
+			return _levLitterbox;
 		}
 
 		public function switchLevel(levelNum:int):void
