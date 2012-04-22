@@ -19,6 +19,7 @@ package
 		private var _sunlight:FlxSprite;
 		private var _ventcover:FlxSprite;
 		private var _cat:FlxSprite;
+		private var _catAnimation:CatAnimation;
 		private var _fan:FlxSprite;
 		private var _litter:FlxSprite;
 		private var _pill:FlxSprite;
@@ -52,6 +53,13 @@ package
 			_ventcover.origin.make(0, 0);
 			add(_ventcover);
 
+			_litter = new FlxSprite(260, 214);
+			_litter.loadGraphic(GfxLitter, true, false, 35, 25);
+			_litter.addAnimation("clean", [0], 1, true);
+			_litter.addAnimation("dirty", [1], 1, true);
+			_litter.play("clean");
+			add(_litter);
+
 			_cat = new FlxSprite(89, 196);
 			_cat.loadGraphic(GfxCat, true, true, 54, 42);
 			_cat.addAnimation("sleeping", [0], 1, true);
@@ -65,13 +73,6 @@ package
 			_fan.addAnimation("off", [1], 1, true);
 			_fan.play("movement");
 			add(_fan);
-
-			_litter = new FlxSprite(260, 214);
-			_litter.loadGraphic(GfxLitter, true, false, 35, 25);
-			_litter.addAnimation("clean", [0], 1, true);
-			_litter.addAnimation("dirty", [1], 1, true);
-			_litter.play("clean");
-			add(_litter);
 
 			_pill = new FlxSprite(118, 155, GfxPill);
 			add(_pill);
@@ -209,18 +210,16 @@ package
 
 		private function startCatAni():void
 		{
-			_cat.addAnimationCallback(catAnimationControl);
-			_cat.play("gotolitterbox");
+			remove(_cat);
+			_catAnimation = new CatAnimation();
+			_catAnimation.x = 90;
+			_catAnimation.y = 170;
+			add(_catAnimation);
 		}
 
-		private function catAnimationControl(ani:String, frame:int, index:int):void
+		public function addTheGift():void
 		{
-			// Add cat's crap to the litter box.
-			(FlxG.state as PlayState).litterboxLevel.addTheGift();
 			_litter.play("dirty");
-
-			// Remove the cat from the scene.
-			remove(_cat);
 		}
 
 		public function dropGift():void
