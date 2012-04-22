@@ -12,6 +12,7 @@ package
 		private var _fg:FlxSprite;
 		private var _glass:FlxSprite;
 		private var _pill:FlxSprite;
+		private var _pillIsContaminated:Boolean = false;
 
 		public function LevBedsidetable():void
 		{
@@ -49,12 +50,23 @@ package
 			}
 
 			if (player.hasWeight && _pill.overlaps(playerSprite)) {
+				_pillIsContaminated = true;
 				_pill.play("dirty");
 				player.dropGift();
-				(FlxG.state as PlayState).getMainLevel().dropGift();
+				(FlxG.state as PlayState).mainLevel.dropGift();
 			}
 
 			super.controlInteractionsWithPlayer(player);
+		}
+
+		public function get pillIsContaminated():Boolean
+		{
+			return _pillIsContaminated;
+		}
+
+		public function takePill():void
+		{
+			remove(_pill);
 		}
 
 	}

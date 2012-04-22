@@ -11,6 +11,7 @@ package
 		[Embed(source = "../assets/lev_main_cat.png")] private var GfxCat:Class;
 		[Embed(source = "../assets/lev_main_fan.png")] private var GfxFan:Class;
 		[Embed(source = "../assets/lev_main_litter.png")] private var GfxLitter:Class;
+		[Embed(source = "../assets/lev_main_pill.png")] private var GfxPill:Class;
 
 		private var _fg:FlxSprite;
 		private var _sunlight:FlxSprite;
@@ -18,10 +19,12 @@ package
 		private var _cat:FlxSprite;
 		private var _fan:FlxSprite;
 		private var _litter:FlxSprite;
-		private var _fanIsOn:Boolean = true;
+		private var _pill:FlxSprite;
 
+		private var _fanIsOn:Boolean = true;
 		private var _catAwakened:Boolean = false;
 		private var _giftDropped:Boolean = false;
+		private var _lockHumanHeadLevel:Boolean = false;
 
 		public function LevMain():void
 		{
@@ -49,6 +52,7 @@ package
 			_fan = new FlxSprite(117, 1);
 			_fan.loadGraphic(GfxFan, true, false, 86, 38);
 			_fan.addAnimation("movement", [0, 1, 2], 12, true);
+			_fan.addAnimation("off", [0], 1, true);
 			_fan.play("movement");
 			add(_fan);
 
@@ -58,6 +62,9 @@ package
 			_litter.addAnimation("dirty", [1], 1, true);
 			_litter.play("clean");
 			add(_litter);
+
+			_pill = new FlxSprite(118, 155, GfxPill);
+			add(_pill);
 
 			setFgSprite(_fg);
 		}
@@ -130,6 +137,10 @@ package
 							if (_catAwakened)
 								preconditions = false;
 							break;
+						case Levels.HUMANHEAD:
+							if (_lockHumanHeadLevel)
+								preconditions = false;
+							break;
 					}
 
 					if (preconditions) {
@@ -156,7 +167,7 @@ package
 		private function catAnimationControl(ani:String, frame:int, index:int):void
 		{
 			// Add cat's crap to the litter box.
-			(FlxG.state as PlayState).getLitterboxLevel().addTheGift();
+			(FlxG.state as PlayState).litterboxLevel.addTheGift();
 			_litter.play("dirty");
 
 			// Remove the cat from the scene.
@@ -166,6 +177,16 @@ package
 		public function dropGift():void
 		{
 			_giftDropped = true;
+		}
+
+		public function wakeupHuman():void
+		{
+			_lockHumanHeadLevel = true;
+
+			// TODO
+			_fanIsOn = false;
+			_fan.play("off");
+			remove(_pill);
 		}
 
 	}

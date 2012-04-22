@@ -66,7 +66,7 @@ package
 				_leftNoiseElapsed >= ELAPSED_TIME_TO_LISTEN) {
 				// Start the cat animation when the player goes back
 				// to the main level (or the cat eyes animation ends).
-				(FlxG.state as PlayState).getMainLevel().startCatAniOnEnter();
+				(FlxG.state as PlayState).mainLevel.startCatAniOnEnter();
 
 				// Show eyes
 				_eyes.play("movement");

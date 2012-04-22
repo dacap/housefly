@@ -5,13 +5,13 @@ package
 	public class PlayState extends FlxState
 	{
 		private var _level:Level;
-		private var _levMain:LevMain;
-		private var _levGlass:LevGlass;
-		private var _levCat:LevCat;
-		private var _levLitterbox:LevLitterbox;
-		private var _levBedsidetable:LevBedsidetable;
-		private var _levHumanhead:LevHumanhead;
-		private var _levVentcover:LevVentcover;
+		private var _levMain:LevMain = new LevMain();
+		private var _levGlass:LevGlass = new LevGlass();
+		private var _levCat:LevCat = new LevCat();
+		private var _levLitterbox:LevLitterbox = new LevLitterbox();
+		private var _levBedsidetable:LevBedsidetable = new LevBedsidetable();
+		private var _levHumanhead:LevHumanhead = new LevHumanhead();
+		private var _levVentcover:LevVentcover = new LevVentcover();
 
 		private var _player:Player;
 		private var _title:FlxText;
@@ -24,9 +24,7 @@ package
 
 			_time = 0.0;
 
-			//_levGlass = new LevGlass();
 			//_level = _levGlass;
-			_levMain = new LevMain();
 			_level = _levMain;
 
 			_player = new Player();
@@ -90,59 +88,22 @@ package
 			return _level;
 		}
 
-		public function getMainLevel():LevMain
-		{
-			if (!_levMain) _levMain = new LevMain();
-			return _levMain;
-		}
-
-		public function getLitterboxLevel():LevLitterbox
-		{
-			if (!_levLitterbox) _levLitterbox = new LevLitterbox();
-			return _levLitterbox;
-		}
+		public function get mainLevel():LevMain { return _levMain; }
+		public function get litterboxLevel():LevLitterbox { return _levLitterbox; }
+		public function get bedsidetableLevel():LevBedsidetable { return _levBedsidetable; }
 
 		public function switchLevel(levelNum:int):void
 		{
 			remove(_level);
 
 			switch (levelNum) {
-
-				case Levels.MAIN:
-					if (_levMain == null) _levMain = new LevMain();
-					_level = _levMain;
-					break;
-
-				case Levels.GLASS:
-					if (_levGlass == null) _levGlass = new LevGlass();
-					_level = _levGlass;
-					break;
-
-				case Levels.CAT:
-					if (_levCat == null) _levCat = new LevCat();
-					_level = _levCat;
-					break;
-
-				case Levels.LITTERBOX:
-					if (!_levLitterbox) _levLitterbox = new LevLitterbox();
-					_level = _levLitterbox;
-					break;
-
-				case Levels.BEDSIDETABLE:
-					if (!_levBedsidetable) _levBedsidetable = new LevBedsidetable();
-					_level = _levBedsidetable;
-					break;
-
-				case Levels.HUMANHEAD:
-					if (!_levHumanhead) _levHumanhead = new LevHumanhead();
-					_level = _levHumanhead;
-					break;
-
-				case Levels.VENTCOVER:
-					if (!_levVentcover) _levVentcover = new LevVentcover();
-					_level = _levVentcover;
-					break;
-
+				case Levels.MAIN: _level = _levMain; break;
+				case Levels.GLASS: _level = _levGlass; break;
+				case Levels.CAT: _level = _levCat; break;
+				case Levels.LITTERBOX: _level = _levLitterbox; break;
+				case Levels.BEDSIDETABLE: _level = _levBedsidetable; break;
+				case Levels.HUMANHEAD: _level = _levHumanhead; break;
+				case Levels.VENTCOVER: _level = _levVentcover; break;
 			}
 
 			add(_level);
