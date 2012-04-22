@@ -194,5 +194,16 @@ package
 			}
 		}
 
+		public function get hasWeight():Boolean
+		{
+			return _withWeight;
+		}
+
+		public function dropGift():void
+		{
+			_withWeight = false;
+			remove(_flyWeight);
+		}
+
 	}
 }

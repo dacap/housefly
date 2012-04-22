@@ -21,6 +21,7 @@ package
 		private var _fanIsOn:Boolean = true;
 
 		private var _catAwakened:Boolean = false;
+		private var _giftDropped:Boolean = false;
 
 		public function LevMain():void
 		{
@@ -150,6 +151,10 @@ package
 
 			// Remove the cat from the scene.
 			remove(_cat);
+		}
+
+		public function dropGift() {
+			_giftDropped = true;
 		}
 
 	}

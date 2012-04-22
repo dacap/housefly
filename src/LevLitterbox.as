@@ -10,6 +10,7 @@ package
 
 		private var _fg:FlxSprite;
 		private var _gift:FlxSprite;
+		private var _giftOnLitter:Boolean = false;
 
 		public function LevLitterbox():void
 		{
@@ -34,7 +35,7 @@ package
 			}
 
 			// Touch the "gift"
-			if (_gift.visible && _gift.overlaps(playerSprite)) {
+			if (_giftOnLitter && _gift.overlaps(playerSprite)) {
 				player.standOnGift();
 			}
 
@@ -43,6 +44,7 @@ package
 
 		public function addTheGift():void
 		{
+			_giftOnLitter = true;
 			add(_gift);
 		}
 
