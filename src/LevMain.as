@@ -12,6 +12,8 @@ package
 		[Embed(source = "../assets/lev_main_fan.png")] private var GfxFan:Class;
 		[Embed(source = "../assets/lev_main_litter.png")] private var GfxLitter:Class;
 		[Embed(source = "../assets/lev_main_pill.png")] private var GfxPill:Class;
+		[Embed(source = "../assets/lev_main_window.png")] private var GfxWindow:Class;
+		[Embed(source = "../assets/lev_main_empty_bed.png")] private var GfxEmptyBed:Class;
 
 		private var _fg:FlxSprite;
 		private var _sunlight:FlxSprite;
@@ -20,14 +22,20 @@ package
 		private var _fan:FlxSprite;
 		private var _litter:FlxSprite;
 		private var _pill:FlxSprite;
+		private var _window:FlxSprite;
+		private var _emptyBed:FlxSprite;
+		private var _humanFighter:HumanFighter;
 
 		private var _time:Number = 0;
-		// private var _fanIsOn:Boolean = true;
-		private var _fanIsOn:Boolean = false;
+		 private var _fanIsOn:Boolean = true;
 		private var _catAwakened:Boolean = false;
 		private var _giftDropped:Boolean = false;
 		private var _lockHumanHeadLevel:Boolean = false;
+		private var _ventcoverOnWall:Boolean = true;
 		private var _disableAllEntries:Boolean = false;
+		private var _fighting:Boolean = false;
+		private var _windowIsOpened:Boolean = false;
+		private var _winRect:FlxRect = new FlxRect(302, 81, 18, 75);
 
 		public function LevMain():void
 		{
@@ -36,8 +44,9 @@ package
 			_fg = new FlxSprite(0, 0, GfxFg);
 			add(_fg);
 
-			_sunlight = new FlxSprite(0, 0, GfxSunlight);
-			add(_sunlight);
+			_emptyBed = new FlxSprite(7, 122, GfxEmptyBed);
+			_emptyBed.visible = false;
+			add(_emptyBed);
 
 			_ventcover = new FlxSprite(37, 32, GfxVentCover);
 			_ventcover.origin.make(0, 0);
@@ -67,6 +76,17 @@ package
 			_pill = new FlxSprite(118, 155, GfxPill);
 			add(_pill);
 
+			_window = new FlxSprite(299, 51);
+			_window.loadGraphic(GfxWindow, true, false, 21, 108);
+			_window.addAnimation("closed", [0], 1, true);
+			_window.addAnimation("opening", [0, 1, 2, 2], 6, false);
+			_window.addAnimation("opened", [2], 1, true);
+			_window.play("closed");
+			add(_window);
+
+			_sunlight = new FlxSprite(0, 0, GfxSunlight);
+			add(_sunlight);
+
 			setFgSprite(_fg);
 		}
 
@@ -76,7 +96,16 @@ package
 
 			_time += FlxG.elapsed;
 
-			_ventcover.angle = 45 + 4 * Math.sin(2 * Math.PI * (_time % 2));
+			if (_ventcoverOnWall) {
+				_ventcover.angle = 45 + 4 * Math.sin(2 * Math.PI * (_time % 2));
+			}
+			else if (_ventcover.y > 140) {
+				_ventcover.y = 140;
+				_ventcover.angularAcceleration = 0;
+				_ventcover.angularVelocity = 0;
+				_ventcover.acceleration.make(0, 0);
+				_ventcover.velocity.make(0, 0);
+			}
 		}
 
 		override public function initPlayerPosition(player:Player, fromLevel:Level):void
@@ -123,6 +152,21 @@ package
 						playerSprite.velocity.x += 8 - 8 * ((1-f) + f*Math.random());
 						playerSprite.velocity.y += 4 * ((1-f) + f*Math.random());
 					}
+				}
+			}
+
+			// When the player is fighting
+			if (_fighting) {
+				if (playerSprite.y > 90 && playerSprite.x < 200) {
+					playerSprite.y = 90;
+					if (playerSprite.velocity.y > 0) {
+						playerSprite.velocity.y = -playerSprite.velocity.y;
+					}
+				}
+				
+				// If the player win
+				if (_windowIsOpened && _winRect.overlaps(player.bounds)) {
+					FlxG.switchState(new WinState());
 				}
 			}
 
@@ -197,9 +241,35 @@ package
 		public function dropVentCoverToHuman():void
 		{
 			_disableAllEntries = true;
-			remove(_ventcover);
+			_fighting = true;
+			_ventcover.y += 32;
+			_ventcover.angularAcceleration = 10;
+			_ventcover.acceleration.y = 200;
+			_ventcoverOnWall = false;
+			//_ventcover.followPath(new FlxPath([new FlxPoint()]));
+			//remove(_ventcover);
+			_emptyBed.visible = true;
+
+			_humanFighter = new HumanFighter();
+			_humanFighter.x = 103;
+			_humanFighter.y = 73;
+			add(_humanFighter);
 
 			// TODO play animation
+		}
+
+		public function openWindow():void
+		{
+			_window.addAnimationCallback(controlOpenWindow);
+			_window.play("opening");
+		}
+
+		private function controlOpenWindow(ani:String, frame:int, index:int):void
+		{
+			if (ani == "opening" && frame >= 3) {
+				_windowIsOpened = true;
+				_window.play("opened");
+			}
 		}
 
 	}

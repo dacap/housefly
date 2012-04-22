@@ -49,6 +49,13 @@ package
 				switchLevel(Levels.MAIN);
 			}
 		}
+		
+		override public function initPlayerPosition(player:Player, fromLevel:Level):void 
+		{
+			super.initPlayerPosition(player, fromLevel);
+			
+			_annoyingTime = 0;
+		}
 
 		override public function controlInteractionsWithPlayer(player:Player):void
 		{

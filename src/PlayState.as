@@ -16,16 +16,16 @@ package
 		private var _player:Player;
 		private var _title:FlxText;
 		private var _author:FlxText;
-		private var _time:Number;
+		private var _time:Number = 0;
 
 		override public function create():void
 		{
 			super.create();
 
-			_time = 0.0;
-
-			//_level = _levGlass;
-			_level = _levMain;
+			_level = _levGlass;
+			//_level = _levMain;
+			//_level = _levVentcover;
+			//_levMain.dropVentCoverToHuman();
 
 			_player = new Player();
 			_player.setCurrentLevel(_level);
@@ -34,14 +34,14 @@ package
 			add(_player);
 
 			_title = new FlxText(FlxG.width / 2 - 100, FlxG.height - 34, 200, "Housefly");
-			_title.color = 0xff000000
+			_title.color = 0xff000000;
 			_title.alignment = "center";
 			_title.scrollFactor.x = _title.scrollFactor.y = 0.0;
 			_title.alpha = 0;
 			add(_title);
 
 			_author = new FlxText(FlxG.width / 2 - 100, FlxG.height - 20, 200, "by David Capello");
-			_author.color = 0xff000000
+			_author.color = 0xff000000;
 			_author.alignment = "center";
 			_author.scrollFactor.x = _author.scrollFactor.y = 0.0;
 			_author.alpha = 0;
@@ -88,6 +88,7 @@ package
 			return _level;
 		}
 
+		public function get player():Player { return _player; }
 		public function get mainLevel():LevMain { return _levMain; }
 		public function get litterboxLevel():LevLitterbox { return _levLitterbox; }
 		public function get bedsidetableLevel():LevBedsidetable { return _levBedsidetable; }
