@@ -21,10 +21,13 @@ package
 		private var _litter:FlxSprite;
 		private var _pill:FlxSprite;
 
-		private var _fanIsOn:Boolean = true;
+		private var _time:Number = 0;
+		// private var _fanIsOn:Boolean = true;
+		private var _fanIsOn:Boolean = false;
 		private var _catAwakened:Boolean = false;
 		private var _giftDropped:Boolean = false;
 		private var _lockHumanHeadLevel:Boolean = false;
+		private var _disableAllEntries:Boolean = false;
 
 		public function LevMain():void
 		{
@@ -36,10 +39,8 @@ package
 			_sunlight = new FlxSprite(0, 0, GfxSunlight);
 			add(_sunlight);
 
-			_ventcover = new FlxSprite(33, 30);
-			_ventcover.loadGraphic(GfxVentCover, true, false, 24, 24);
-			_ventcover.addAnimation("movement", [0, 1, 2, 1], 4, true);
-			_ventcover.play("movement", true);
+			_ventcover = new FlxSprite(37, 32, GfxVentCover);
+			_ventcover.origin.make(0, 0);
 			add(_ventcover);
 
 			_cat = new FlxSprite(89, 196);
@@ -52,7 +53,7 @@ package
 			_fan = new FlxSprite(117, 1);
 			_fan.loadGraphic(GfxFan, true, false, 86, 38);
 			_fan.addAnimation("movement", [0, 1, 2], 12, true);
-			_fan.addAnimation("off", [0], 1, true);
+			_fan.addAnimation("off", [1], 1, true);
 			_fan.play("movement");
 			add(_fan);
 
@@ -72,6 +73,10 @@ package
 		override public function update():void
 		{
 			super.update();
+
+			_time += FlxG.elapsed;
+
+			_ventcover.angle = 45 + 4 * Math.sin(2 * Math.PI * (_time % 2));
 		}
 
 		override public function initPlayerPosition(player:Player, fromLevel:Level):void
@@ -124,7 +129,7 @@ package
 			// Enter to some sublevel...
 			for (var num:int = Levels.FIRST_ENTRY; num <= Levels.LAST_ENTRY; ++num) {
 				if (Levels.ENTRY_RECT[num].overlaps(player.bounds)) {
-					var preconditions:Boolean = true;
+					var preconditions:Boolean = (!_disableAllEntries);
 
 					switch (num) {
 						case Levels.VENTCOVER:
@@ -183,10 +188,18 @@ package
 		{
 			_lockHumanHeadLevel = true;
 
-			// TODO
+			// TODO play animation and do the following the callback
 			_fanIsOn = false;
 			_fan.play("off");
 			remove(_pill);
+		}
+
+		public function dropVentCoverToHuman():void
+		{
+			_disableAllEntries = true;
+			remove(_ventcover);
+
+			// TODO play animation
 		}
 
 	}
