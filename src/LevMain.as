@@ -83,6 +83,12 @@ package
 				playerSprite.x = entryRect.x + entryRect.width * (oldX - oldRect.x) / oldRect.width;
 				playerSprite.y = entryRect.y + entryRect.height * (oldY - oldRect.y) / oldRect.height;
 				Utils.moveSpriteOutside(player.getSprite(), entryRect);
+
+				if (fromLevel.num == Levels.CAT) {
+					if (_catAwakened) {
+						startCatAni();
+					}
+				}
 			}
 			else {
 				// Only for testing, because the main level is not the first level.
@@ -136,9 +142,13 @@ package
 			super.controlInteractionsWithPlayer(player);
 		}
 
-		public function startCatAni():void
+		public function startCatAniOnEnter():void
 		{
 			_catAwakened = true;
+		}
+
+		private function startCatAni():void
+		{
 			_cat.addAnimationCallback(catAnimationControl);
 			_cat.play("gotolitterbox");
 		}
@@ -153,7 +163,8 @@ package
 			remove(_cat);
 		}
 
-		public function dropGift() {
+		public function dropGift():void
+		{
 			_giftDropped = true;
 		}
 

@@ -52,8 +52,6 @@ package
 		private function eyesCallback(anim:String, frame:uint, index:uint):void
 		{
 			if (frame >= 9) {
-				(FlxG.state as PlayState).getMainLevel().startCatAni();
-
 				// Go back to main level (and start the cat animation). From now this level
 				// will be completelly destroyed and cannot be accessed again.
 				switchLevel(Levels.MAIN);
@@ -66,6 +64,10 @@ package
 
 			if (_rightNoiseElapsed >= ELAPSED_TIME_TO_LISTEN &&
 				_leftNoiseElapsed >= ELAPSED_TIME_TO_LISTEN) {
+				// Start the cat animation when the player goes back
+				// to the main level (or the cat eyes animation ends).
+				(FlxG.state as PlayState).getMainLevel().startCatAniOnEnter();
+
 				// Show eyes
 				_eyes.play("movement");
 				add(_eyes);
