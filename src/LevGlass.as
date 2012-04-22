@@ -3,7 +3,7 @@ package
 	import flash.text.ime.CompositionAttributeRange;
 	import org.flixel.*;
 
-	public class LevGlass extends Level
+	public class LevGlass extends LevelCloseLook
 	{
 		[Embed(source = "../assets/lev_glass_fg.png")] private var GfxFg:Class;
 		[Embed(source = "../assets/lev_glass_bg.png")] private var GfxBg:Class;
@@ -45,28 +45,14 @@ package
 
 		override public function initPlayerPosition(player:Player, fromLevel:Level):void
 		{
-			var oldRect:FlxRect;
-			var oldX:Number = player.getSprite().x;
-			var oldY:Number = player.getSprite().y;
-
 			super.initPlayerPosition(player, fromLevel);
 
-			player.setLook(Player.CLOSE_LOOK);
-			var playerSprite:FlxSprite = player.getSprite();
-
-			switch (fromLevel ? fromLevel.num: Levels.NONE) {
-				case Levels.NONE:
-					playerSprite.x = _fg.width - playerSprite.width - 100;
-					playerSprite.y = FlxG.height/2;
-					playerSprite.velocity.x = 128;
-					playerSprite.velocity.y = -16;
-					break;
-
-				case Levels.MAIN:
-					oldRect = (fromLevel as LevMain).levGlassEntry;
-					playerSprite.x = 16 + (_fg.width - 32) * Math.max(0, Math.min((oldX - oldRect.x), oldRect.width))  / oldRect.width;
-					playerSprite.y = 16 + (_fg.height - 32) * Math.max(0, Math.min((oldY - oldRect.y), oldRect.height)) / oldRect.height;
-					break;
+			if (fromLevel == null) {
+				var playerSprite:FlxSprite = player.getSprite();
+				playerSprite.x = _fg.width - playerSprite.width - 100;
+				playerSprite.y = FlxG.height/2;
+				playerSprite.velocity.x = 128;
+				playerSprite.velocity.y = -16;
 			}
 		}
 

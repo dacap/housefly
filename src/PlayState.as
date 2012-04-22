@@ -5,9 +5,14 @@ package
 	public class PlayState extends FlxState
 	{
 		private var _level:Level;
-		private var _levGlass:LevGlass;
 		private var _levMain:LevMain;
+		private var _levGlass:LevGlass;
 		private var _levCat:LevCat;
+		private var _levLitterbox:LevLitterbox;
+		private var _levBedsidetable:LevBedsidetable;
+		private var _levHumanhead:LevHumanhead;
+		private var _levVentcover:LevVentcover;
+
 		private var _player:Player;
 		private var _title:FlxText;
 		private var _author:FlxText;
@@ -96,20 +101,41 @@ package
 
 			switch (levelNum) {
 
-				case Levels.GLASS:
-					if (_levGlass == null) _levGlass = new LevGlass();
-					_level = _levGlass;
-					break;
-
 				case Levels.MAIN:
 					if (_levMain == null) _levMain = new LevMain();
 					_level = _levMain;
+					break;
+
+				case Levels.GLASS:
+					if (_levGlass == null) _levGlass = new LevGlass();
+					_level = _levGlass;
 					break;
 
 				case Levels.CAT:
 					if (_levCat == null) _levCat = new LevCat();
 					_level = _levCat;
 					break;
+
+				case Levels.LITTERBOX:
+					if (!_levLitterbox) _levLitterbox = new LevLitterbox();
+					_level = _levLitterbox;
+					break;
+
+				case Levels.BEDSIDETABLE:
+					if (!_levBedsidetable) _levBedsidetable = new LevBedsidetable();
+					_level = _levBedsidetable;
+					break;
+
+				case Levels.HUMANHEAD:
+					if (!_levHumanhead) _levHumanhead = new LevHumanhead();
+					_level = _levHumanhead;
+					break;
+
+				case Levels.VENTCOVER:
+					if (!_levVentcover) _levVentcover = new LevVentcover();
+					_level = _levVentcover;
+					break;
+
 			}
 
 			add(_level);

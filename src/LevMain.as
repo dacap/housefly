@@ -18,9 +18,6 @@ package
 		private var _fan:FlxSprite;
 		private var _fanIsOn:Boolean;
 
-		private var _levGlassEntry:FlxRect;
-		private var _levCatEntry:FlxRect;
-
 		private var _catAwakened:Boolean = false;
 
 		public function LevMain():void
@@ -53,20 +50,7 @@ package
 			_fanIsOn = true;
 			add(_fan);
 
-			_levGlassEntry = new FlxRect(273, 34, 47, 108);
-			_levCatEntry = new FlxRect(93, 210, 34, 26);
-
 			setFgSprite(_fg);
-		}
-
-		public function get levGlassEntry():FlxRect
-		{
-			return _levGlassEntry;
-		}
-
-		public function get levCatEntry():FlxRect
-		{
-			return _levCatEntry;
 		}
 
 		override public function update():void
@@ -85,24 +69,16 @@ package
 			player.setLook(Player.FAR_LOOK);
 			var playerSprite:FlxSprite = player.getSprite();
 
-			switch (fromLevel ? fromLevel.num: Levels.NONE) {
-				case Levels.NONE:
-					// Only for testing, because the main level is not the first level.
-					playerSprite.x = FlxG.width/2;
-					playerSprite.y = FlxG.height/2;
-					break;
-
-				case Levels.GLASS:
-					playerSprite.x = _levGlassEntry.x + _levGlassEntry.width * (oldX - oldRect.x) / oldRect.width;
-					playerSprite.y = _levGlassEntry.y + _levGlassEntry.height * (oldY - oldRect.y) / oldRect.height;
-					Utils.moveSpriteOutside(player.getSprite(), _levGlassEntry);
-					break;
-
-				case Levels.CAT:
-					playerSprite.x = _levCatEntry.x + _levCatEntry.width * (oldX - oldRect.x) / oldRect.width;
-					playerSprite.y = _levCatEntry.y + _levCatEntry.height * (oldY - oldRect.y) / oldRect.height;
-					Utils.moveSpriteOutside(playerSprite, _levCatEntry);
-					break;
+			if (fromLevel) {
+				var entryRect:FlxRect = Levels.ENTRY_RECT[fromLevel.num];
+				playerSprite.x = entryRect.x + entryRect.width * (oldX - oldRect.x) / oldRect.width;
+				playerSprite.y = entryRect.y + entryRect.height * (oldY - oldRect.y) / oldRect.height;
+				Utils.moveSpriteOutside(player.getSprite(), entryRect);
+			}
+			else {
+				// Only for testing, because the main level is not the first level.
+				playerSprite.x = FlxG.width/2;
+				playerSprite.y = FlxG.height/2;
 			}
 
 			FlxG.camera.zoom = 2.0;
@@ -123,36 +99,16 @@ package
 				}
 			}
 
-			// Enter to "glass" level
-			var dist:Number = FlxU.getDistance(new FlxPoint(playerSprite.x, playerSprite.y),
-											   new FlxPoint(_levGlassEntry.x + _levGlassEntry.width/2,
-															_levGlassEntry.y + _levGlassEntry.height/2));
-			if (_levGlassEntry.overlaps(player.bounds)) {
-				switchLevel(Levels.GLASS);
-				return;
-			}
-			else if (dist < _levGlassEntry.width*2) {
-				//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levGlassEntry.width*2)));
-			}
-			else {
-				//FlxG.camera.zoom = 2.0;
-			}
+			for (var num:int = Levels.FIRST_ENTRY; num <= Levels.LAST_ENTRY; ++num) {
+				// We cannot enter to the "cat" area if the cat was awakened.
+				if (num == Levels.CAT) {
+					if (_catAwakened)
+						continue;
+				}
 
-			// Enter to "cat" level (only if the cat wasn't awakened)
-			if (!_catAwakened)
-			{
-				dist = FlxU.getDistance(new FlxPoint(playerSprite.x, playerSprite.y),
-										new FlxPoint(_levCatEntry.x + _levCatEntry.width/2,
-													 _levCatEntry.y + _levCatEntry.height/2));
-				if (_levCatEntry.overlaps(player.bounds)) {
-					switchLevel(Levels.CAT);
+				if (Levels.ENTRY_RECT[num].overlaps(player.bounds)) {
+					switchLevel(num);
 					return;
-				}
-				else if (dist < _levCatEntry.height*2) {
-					//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levCatEntry.height * 2)));
-				}
-				else {
-					//FlxG.camera.zoom = 2.0;
 				}
 			}
 
