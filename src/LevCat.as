@@ -45,8 +45,8 @@ package
 			switch (fromLevel ? fromLevel.num: Levels.NONE) {
 				case Levels.MAIN:
 					oldRect = (fromLevel as LevMain).levCatEntry
-					playerSprite.x = _fg.width * (oldX - oldRect.x) / oldRect.width;
-					playerSprite.y = _fg.height * (oldY - oldRect.y) / oldRect.height;
+					playerSprite.x = 16 + (_fg.width - 32) * Math.max(0, Math.min((oldX - oldRect.x), oldRect.width))  / oldRect.width;
+					playerSprite.y = 16 + (_fg.height - 32) * Math.max(0, Math.min((oldY - oldRect.y), oldRect.height)) / oldRect.height;
 					break;
 			}
 		}
@@ -60,9 +60,10 @@ package
 				playerSprite.x + playerSprite.width >= _fg.width) {
 
 				switchLevel(Levels.MAIN);
+				return;
 			}
-			else
-				super.controlInteractionsWithPlayer(player);
+
+			super.controlInteractionsWithPlayer(player);
 		}
 
 	}

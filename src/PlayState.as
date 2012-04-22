@@ -16,7 +16,7 @@ package
 		override public function create():void
 		{
 			super.create();
-			
+
 			_time = 0.0;
 
 			//_levGlass = new LevGlass();
@@ -26,7 +26,7 @@ package
 
 			_player = new Player();
 			_player.setCurrentLevel(_level);
-			
+
 			add(_level);
 			add(_player);
 
@@ -44,11 +44,11 @@ package
 			_author.alpha = 0;
 			add(_author);
 		}
-		
+
 		override public function update():void
 		{
 			_time += FlxG.elapsed;
-			
+
 			// _title timeline.
 			if (_time >= 2.0 && _time < 3.0) {
 				_title.alpha = _time-2.0;
@@ -79,12 +79,12 @@ package
 
 			super.update();
 		}
-		
+
 		public function getLevel():Level
 		{
 			return _level;
 		}
-		
+
 		public function switchLevel(levelNum:int):void
 		{
 			remove(_level);
@@ -100,7 +100,7 @@ package
 					if (_levMain == null) _levMain = new LevMain();
 					_level = _levMain;
 					break;
-					
+
 				case Levels.CAT:
 					if (_levCat == null) _levCat = new LevCat();
 					_level = _levCat;

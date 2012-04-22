@@ -124,6 +124,7 @@ package
 															_levGlassEntry.y + _levGlassEntry.height/2));
 			if (_levGlassEntry.overlaps(player.bounds)) {
 				switchLevel(Levels.GLASS);
+				return;
 			}
 			else if (dist < _levGlassEntry.width*2) {
 				//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levGlassEntry.width*2)));
@@ -138,6 +139,7 @@ package
 												 _levCatEntry.y + _levCatEntry.height/2));
 			if (_levCatEntry.overlaps(player.bounds)) {
 				switchLevel(Levels.CAT);
+				return;
 			}
 			else if (dist < _levCatEntry.height*2) {
 				//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levCatEntry.height * 2)));

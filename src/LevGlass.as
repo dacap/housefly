@@ -53,7 +53,7 @@ package
 
 			player.setLook(Player.CLOSE_LOOK);
 			var playerSprite:FlxSprite = player.getSprite();
-			
+
 			switch (fromLevel ? fromLevel.num: Levels.NONE) {
 				case Levels.NONE:
 					playerSprite.x = _fg.width - playerSprite.width - 100;
@@ -64,8 +64,8 @@ package
 
 				case Levels.MAIN:
 					oldRect = (fromLevel as LevMain).levGlassEntry;
-					playerSprite.x = _fg.width * (oldX - oldRect.x) / oldRect.width;
-					playerSprite.y = _fg.height * (oldY - oldRect.y) / oldRect.height;
+					playerSprite.x = 16 + (_fg.width - 32) * Math.max(0, Math.min((oldX - oldRect.x), oldRect.width))  / oldRect.width;
+					playerSprite.y = 16 + (_fg.height - 32) * Math.max(0, Math.min((oldY - oldRect.y), oldRect.height)) / oldRect.height;
 					break;
 			}
 		}
@@ -87,9 +87,10 @@ package
 			// The fly is going to MAIN level.
 			if (playerSprite.x < 0 || playerSprite.y < 0 || playerSprite.y + playerSprite.height >= _fg.height) {
 				switchLevel(Levels.MAIN);
+				return;
 			}
-			else
-				super.controlInteractionsWithPlayer(player);
+
+			super.controlInteractionsWithPlayer(player);
 		}
 
 	}
