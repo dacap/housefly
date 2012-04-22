@@ -24,8 +24,10 @@ package
 
 			_level = _levGlass;
 			//_level = _levMain;
+			//_levMain.startCatAni();
 			//_level = _levVentcover;
 			//_levMain.dropVentCoverToHuman();
+			//_levMain.wakeupHuman();
 
 			_player = new Player();
 			_player.setCurrentLevel(_level);

@@ -14,6 +14,9 @@ package
 		[Embed(source = "../assets/lev_main_pill.png")] private var GfxPill:Class;
 		[Embed(source = "../assets/lev_main_window.png")] private var GfxWindow:Class;
 		[Embed(source = "../assets/lev_main_empty_bed.png")] private var GfxEmptyBed:Class;
+		[Embed(source = "../assets/lev_main_used_glass.png")] private var GfxUsedGlass:Class;
+		[Embed(source = "../assets/lev_main_opened_bathroom_door.png")] private var GfxOpenedBathroomDoor:Class;
+		[Embed(source = "../assets/after_a_while.png")] private var GfxAfterAWhile:Class;
 
 		private var _fg:FlxSprite;
 		private var _sunlight:FlxSprite;
@@ -26,17 +29,23 @@ package
 		private var _window:FlxSprite;
 		private var _emptyBed:FlxSprite;
 		private var _humanFighter:HumanFighter;
+		private var _humanAnimation:HumanAnimation;
+		private var _usedGlass:FlxSprite;
+		private var _openedBathroomDoor:FlxSprite;
+		private var _afterAWhile:FlxSprite;
 
 		private var _time:Number = 0;
-		 private var _fanIsOn:Boolean = true;
+		private var _fanIsOn:Boolean = true;
 		private var _catAwakened:Boolean = false;
 		private var _giftDropped:Boolean = false;
 		private var _lockHumanHeadLevel:Boolean = false;
+		private var _lockBedside:Boolean = false;
 		private var _ventcoverOnWall:Boolean = true;
 		private var _disableAllEntries:Boolean = false;
 		private var _fighting:Boolean = false;
 		private var _windowIsOpened:Boolean = false;
 		private var _winRect:FlxRect = new FlxRect(302, 81, 18, 75);
+		private var _afterAWhileTime:Number = 0;
 
 		public function LevMain():void
 		{
@@ -88,6 +97,9 @@ package
 			_sunlight = new FlxSprite(0, 0, GfxSunlight);
 			add(_sunlight);
 
+			_usedGlass = new FlxSprite(102, 138, GfxUsedGlass);
+			_openedBathroomDoor = new FlxSprite(201, 68, GfxOpenedBathroomDoor);
+
 			setFgSprite(_fg);
 		}
 
@@ -106,6 +118,11 @@ package
 				_ventcover.angularVelocity = 0;
 				_ventcover.acceleration.make(0, 0);
 				_ventcover.velocity.make(0, 0);
+			}
+
+			if (_afterAWhile != null && (_time - _afterAWhileTime) > 1) {
+				remove(_afterAWhile);
+				_afterAWhile = null;
 			}
 		}
 
@@ -164,7 +181,7 @@ package
 						playerSprite.velocity.y = -playerSprite.velocity.y;
 					}
 				}
-				
+
 				// If the player win
 				if (_windowIsOpened && _winRect.overlaps(player.bounds)) {
 					FlxG.switchState(new WinState());
@@ -185,6 +202,10 @@ package
 						case Levels.CAT:
 							// We cannot enter to the "cat" area if the cat was awakened.
 							if (_catAwakened)
+								preconditions = false;
+							break;
+						case Levels.BEDSIDETABLE:
+							if (_lockBedside)
 								preconditions = false;
 							break;
 						case Levels.HUMANHEAD:
@@ -230,11 +251,32 @@ package
 		public function wakeupHuman():void
 		{
 			_lockHumanHeadLevel = true;
+			_lockBedside = true;
 
-			// TODO play animation and do the following the callback
+			remove(_sunlight); // quick & dirty fix
+			remove(_pill);
+
+			_humanAnimation = new HumanAnimation();
+			_humanAnimation.x = 34;
+			_humanAnimation.y = 125;
+			add(_humanAnimation);
+
+			add(_sunlight); // quick & dirty fix
+		}
+
+		public function gotoBathroom():void
+		{
+			remove(_humanAnimation);
+
+			add(_usedGlass);
+			add(_openedBathroomDoor);
+
+			_afterAWhile = new FlxSprite(0, 0, GfxAfterAWhile);
+			_afterAWhileTime = _time;
+			add(_afterAWhile);
+
 			_fanIsOn = false;
 			_fan.play("off");
-			remove(_pill);
 		}
 
 		public function dropVentCoverToHuman():void
