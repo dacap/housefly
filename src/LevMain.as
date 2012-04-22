@@ -10,12 +10,14 @@ package
 		[Embed(source = "../assets/lev_main_ventcover.png")] private var GfxVentCover:Class;
 		[Embed(source = "../assets/lev_main_cat.png")] private var GfxCat:Class;
 		[Embed(source = "../assets/lev_main_fan.png")] private var GfxFan:Class;
+		[Embed(source = "../assets/lev_main_litter.png")] private var GfxLitter:Class;
 
 		private var _fg:FlxSprite;
 		private var _sunlight:FlxSprite;
 		private var _ventcover:FlxSprite;
 		private var _cat:FlxSprite;
 		private var _fan:FlxSprite;
+		private var _litter:FlxSprite;
 		private var _fanIsOn:Boolean = true;
 
 		private var _catAwakened:Boolean = false;
@@ -48,6 +50,13 @@ package
 			_fan.addAnimation("movement", [0, 1, 2], 12, true);
 			_fan.play("movement");
 			add(_fan);
+
+			_litter = new FlxSprite(260, 214);
+			_litter.loadGraphic(GfxLitter, true, false, 35, 25);
+			_litter.addAnimation("clean", [0], 1, true);
+			_litter.addAnimation("dirty", [1], 1, true);
+			_litter.play("clean");
+			add(_litter);
 
 			setFgSprite(_fg);
 		}
