@@ -85,6 +85,11 @@ package
 			return _level;
 		}
 
+		public function getMainLevel():LevMain
+		{
+			return _levMain;
+		}
+
 		public function switchLevel(levelNum:int):void
 		{
 			remove(_level);

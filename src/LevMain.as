@@ -21,6 +21,8 @@ package
 		private var _levGlassEntry:FlxRect;
 		private var _levCatEntry:FlxRect;
 
+		private var _catAwakened:Boolean = false;
+
 		public function LevMain():void
 		{
 			super(Levels.MAIN);
@@ -37,8 +39,11 @@ package
 			_ventcover.play("movement", true);
 			add(_ventcover);
 
-			_cat = new FlxSprite(89, 216);
-			_cat.loadGraphic(GfxCat);
+			_cat = new FlxSprite(89, 196);
+			_cat.loadGraphic(GfxCat, true, true, 54, 42);
+			_cat.addAnimation("sleeping", [0], 1, true);
+			_cat.addAnimation("gotolitterbox", [0], 1, false);
+			_cat.play("sleeping");
 			add(_cat);
 
 			_fan = new FlxSprite(117, 1);
@@ -133,22 +138,31 @@ package
 				//FlxG.camera.zoom = 2.0;
 			}
 
-			// Enter to "cat" level
-			dist = FlxU.getDistance(new FlxPoint(playerSprite.x, playerSprite.y),
-									new FlxPoint(_levCatEntry.x + _levCatEntry.width/2,
-												 _levCatEntry.y + _levCatEntry.height/2));
-			if (_levCatEntry.overlaps(player.bounds)) {
-				switchLevel(Levels.CAT);
-				return;
-			}
-			else if (dist < _levCatEntry.height*2) {
-				//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levCatEntry.height * 2)));
-			}
-			else {
-				//FlxG.camera.zoom = 2.0;
+			// Enter to "cat" level (only if the cat wasn't awakened)
+			if (!_catAwakened)
+			{
+				dist = FlxU.getDistance(new FlxPoint(playerSprite.x, playerSprite.y),
+										new FlxPoint(_levCatEntry.x + _levCatEntry.width/2,
+													 _levCatEntry.y + _levCatEntry.height/2));
+				if (_levCatEntry.overlaps(player.bounds)) {
+					switchLevel(Levels.CAT);
+					return;
+				}
+				else if (dist < _levCatEntry.height*2) {
+					//FlxG.camera.zoom = 2.0 + 0.5 * (1 - (dist / (_levCatEntry.height * 2)));
+				}
+				else {
+					//FlxG.camera.zoom = 2.0;
+				}
 			}
 
 			super.controlInteractionsWithPlayer(player);
+		}
+
+		public function startCatAni():void
+		{
+			_catAwakened = true;
+			_cat.play("gotolitterbox");
 		}
 
 	}
