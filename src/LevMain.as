@@ -16,7 +16,7 @@ package
 		private var _ventcover:FlxSprite;
 		private var _cat:FlxSprite;
 		private var _fan:FlxSprite;
-		private var _fanIsOn:Boolean;
+		private var _fanIsOn:Boolean = true;
 
 		private var _catAwakened:Boolean = false;
 
@@ -47,7 +47,6 @@ package
 			_fan.loadGraphic(GfxFan, true, false, 86, 38);
 			_fan.addAnimation("movement", [0, 1, 2], 12, true);
 			_fan.play("movement");
-			_fanIsOn = true;
 			add(_fan);
 
 			setFgSprite(_fg);
@@ -99,16 +98,28 @@ package
 				}
 			}
 
+			// Enter to some sublevel...
 			for (var num:int = Levels.FIRST_ENTRY; num <= Levels.LAST_ENTRY; ++num) {
-				// We cannot enter to the "cat" area if the cat was awakened.
-				if (num == Levels.CAT) {
-					if (_catAwakened)
-						continue;
-				}
-
 				if (Levels.ENTRY_RECT[num].overlaps(player.bounds)) {
-					switchLevel(num);
-					return;
+					var preconditions:Boolean = true;
+
+					switch (num) {
+						case Levels.VENTCOVER:
+							// If the fan is on, we cannot access to "ventcover" level.
+							if (_fanIsOn)
+								preconditions = false;
+							break;
+						case Levels.CAT:
+							// We cannot enter to the "cat" area if the cat was awakened.
+							if (_catAwakened)
+								preconditions = false;
+							break;
+					}
+
+					if (preconditions) {
+						switchLevel(num);
+						return;
+					}
 				}
 			}
 
