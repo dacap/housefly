@@ -33,7 +33,6 @@ package
 		{
 			_flySound = new FlxSound();
 			_flySound.loadEmbedded(SndFly, true, false);
-			_flySound.volume = 0.5;
 			
 			_flySprite = new FlxSprite();
 			_flySprite.loadGraphic(GfxFly, true, true, 14, 14);

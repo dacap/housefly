@@ -4,6 +4,8 @@ package
 
 	public class PlayState extends FlxState
 	{
+		[Embed(source = "../assets/theme.mp3")] private var SndTheme:Class;
+		
 		private var _level:Level;
 		private var _levMain:LevMain = new LevMain();
 		private var _levGlass:LevGlass = new LevGlass();
@@ -12,6 +14,7 @@ package
 		private var _levBedsidetable:LevBedsidetable = new LevBedsidetable();
 		private var _levHumanhead:LevHumanhead = new LevHumanhead();
 		private var _levVentcover:LevVentcover = new LevVentcover();
+		private var _theme:FlxSound = new FlxSound();
 
 		private var _player:Player;
 		private var _title:FlxText;
@@ -21,6 +24,9 @@ package
 		override public function create():void
 		{
 			super.create();
+			
+			_theme.loadEmbedded(SndTheme, true, false);
+			_theme.play();
 
 			_level = _levGlass;
 			//_level = _levMain;
@@ -98,6 +104,13 @@ package
 		public function switchLevel(levelNum:int):void
 		{
 			remove(_level);
+			
+			if (levelNum == Levels.MAIN) {
+				_theme.volume = 1.0;
+			}
+			else {
+				_theme.volume = 0.4;
+			}
 
 			switch (levelNum) {
 				case Levels.MAIN: _level = _levMain; break;
@@ -112,6 +125,6 @@ package
 			add(_level);
 			_player.setCurrentLevel(_level);
 		}
-
+		
 	}
 }
