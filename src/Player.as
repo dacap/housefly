@@ -7,6 +7,7 @@ package
 		[Embed(source = "../assets/fly.png")] private var GfxFly:Class;
 		[Embed(source = "../assets/fly_on_gift.png")] private var GfxOnGift:Class;
 		[Embed(source = "../assets/fly_weight.png")] private var GfxWeight:Class;
+		[Embed(source = "../assets/fly.mp3")] private var SndFly:Class;
 
 		public static const CLOSE_LOOK:int = 0;
 		public static const FAR_LOOK:int = 1;
@@ -21,6 +22,7 @@ package
 		private var _flyOnGift:FlxSprite;
 		private var _flyPixel:FlxSprite;
 		private var _flyWeight:FlxSprite;
+		private var _flySound:FlxSound;
 		private var _curLevel:Level;
 		private var _rect:FlxRect;
 		private var _velFactor:Number;
@@ -29,6 +31,10 @@ package
 
 		public function Player():void
 		{
+			_flySound = new FlxSound();
+			_flySound.loadEmbedded(SndFly, true, false);
+			_flySound.volume = 0.5;
+			
 			_flySprite = new FlxSprite();
 			_flySprite.loadGraphic(GfxFly, true, true, 14, 14);
 			_flySprite.addAnimation("fly", [0, 1], 30, true);
@@ -58,10 +64,11 @@ package
 		public function setLook(look:int):void
 		{
 			_curLook = look;
-
+			
 			switch (look) {
 
 				case Player.CLOSE_LOOK:
+					_flySound.play();
 					_velFactor = 1;
 
 					_flySprite.velocity.x = _flyPixel.velocity.x * 4;
@@ -80,6 +87,7 @@ package
 					break;
 
 				case Player.FAR_LOOK:
+					_flySound.stop();
 					_velFactor = 0.5;
 
 					_flyPixel.velocity.x = _flySprite.velocity.x / 4;

@@ -7,6 +7,7 @@ package
 	{
 		[Embed(source = "../assets/lev_glass_fg.png")] private var GfxFg:Class;
 		[Embed(source = "../assets/lev_glass_bg.png")] private var GfxBg:Class;
+		[Embed(source = "../assets/hit1.mp3")] private var SndHit1:Class;
 
 		private var _fg:FlxSprite;
 		private var _bg1:FlxSprite;
@@ -67,6 +68,7 @@ package
 				playerSprite.acceleration.x = -4 + 8*Math.random();
 				playerSprite.acceleration.y += -8 + 16 * Math.random();
 
+				FlxG.play(SndHit1, 1.0, false, true);
 				FlxG.camera.shake(0.01, 0.2);
 			}
 

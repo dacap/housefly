@@ -6,6 +6,8 @@ package
 	{
 		[Embed(source = "../assets/human_fight.png")] private var GfxHumanFight:Class;
 		[Embed(source = "../assets/human_fight_open_window.png")] private var GfxOpenWindow:Class;
+		[Embed(source = "../assets/slipper.mp3")] private var SndSlipper:Class;
+		[Embed(source = "../assets/hit2.mp3")] private var SndHit2:Class;
 
 		private var _sprite:FlxSprite;
 		private var _time:Number = 0;
@@ -41,6 +43,7 @@ package
 						velocity.x = 0;
 						play("hit");
 						_hitTime = _time;
+						FlxG.play(SndSlipper, 1.0, false, true);
 					}
 					else {
 						velocity.x = 0;
@@ -98,6 +101,7 @@ package
 					player.getSprite().velocity.y = -400;
 					player.getSprite().velocity.x = -400;
 
+					FlxG.play(SndHit2, 1.0, false, true);
 					FlxG.camera.shake(0.01, 0.2);
 				}
 			}

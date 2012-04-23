@@ -8,6 +8,7 @@ package
 		[Embed(source = "../assets/lev_ventcover_fg.png")] private var GfxFg:Class;
 		[Embed(source = "../assets/lev_ventcover_cover.png")] private var GfxCover:Class;
 		[Embed(source = "../assets/lev_ventcover_screw.png")] private var GfxScrew:Class;
+		[Embed(source = "../assets/hit1.mp3")] private var SndHit1:Class;
 
 		private var _fg:FlxSprite;
 		private var _cover:FlxSprite;
@@ -89,6 +90,7 @@ package
 				playerSprite.acceleration.x = 0;
 				playerSprite.acceleration.y = 0;
 
+				FlxG.play(SndHit1, 1.0, false, true);
 				FlxG.camera.shake(0.01, 0.2);
 
 				if (_screwHits == 3) {
