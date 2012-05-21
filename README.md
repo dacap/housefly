@@ -1,7 +1,7 @@
 # housefly
 
 My entry for Ludum Dare #23 compo. A game developed in 48 hours.
-You can play the right game here:
+You can play the game here:
 
 http://dacap.com.ar/games/housefly/
 
