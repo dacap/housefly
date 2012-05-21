@@ -117,7 +117,7 @@ package
 
 		override public function update():void
 		{
-			if (FlxG.keys.LEFT && _state == STATE_FLYING)  {
+			if ((FlxG.keys.LEFT || FlxG.keys.A) && _state == STATE_FLYING) {
 				_flySprite.facing = FlxObject.LEFT;
 
 				if (_sprite.velocity.x > 0)
@@ -125,7 +125,7 @@ package
 				else
 					_sprite.acceleration.x = -128*_velFactor;
 			}
-			else if (FlxG.keys.RIGHT && _state == STATE_FLYING) {
+			else if ((FlxG.keys.RIGHT || FlxG.keys.D) && _state == STATE_FLYING) {
 				_flySprite.facing = FlxObject.RIGHT;
 
 				if (_sprite.velocity.x < 0)
@@ -139,13 +139,13 @@ package
 				_sprite.acceleration.x = 0;
 			}
 
-			if (FlxG.keys.UP && _state == STATE_FLYING)  {
+			if ((FlxG.keys.UP || FlxG.keys.W) && _state == STATE_FLYING)  {
 				if (_sprite.velocity.y > 0)
 					_sprite.acceleration.y = -256*_velFactor;
 				else
 					_sprite.acceleration.y = -128*_velFactor;
 			}
-			else if (FlxG.keys.DOWN && _state == STATE_FLYING) {
+			else if ((FlxG.keys.DOWN || FlxG.keys.S) && _state == STATE_FLYING) {
 				if (_sprite.velocity.y < 0)
 					_sprite.acceleration.y = +256*_velFactor;
 				else
